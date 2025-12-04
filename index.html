@@ -38,6 +38,11 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
@@ -62,8 +67,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 24px;
+            padding: 0 16px;
             height: 64px;
+            width: 100%;
         }
 
         .logo {
@@ -71,22 +77,25 @@
             font-weight: 800;
             color: #2563eb;
             letter-spacing: -0.025em;
+            white-space: nowrap;
         }
 
         .tool-links {
             display: flex;
             gap: 4px;
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .tool-links a {
             color: #6b7280;
             text-decoration: none;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 500;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 6px;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .tool-links a:hover {
@@ -97,18 +106,19 @@
         .container {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 32px 24px 80px;
+            padding: 32px 16px 120px;
+            width: 100%;
         }
 
         .hero {
             text-align: center;
-            padding: 48px 0 64px;
+            padding: 32px 0 48px;
             max-width: 800px;
             margin: 0 auto;
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 16px;
             font-weight: 800;
             color: #111827;
@@ -117,7 +127,7 @@
         }
 
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             color: #6b7280;
             font-weight: 400;
         }
@@ -125,10 +135,10 @@
         .stats-banner {
             background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
-            padding: 16px 24px;
+            padding: 16px 16px;
             border-radius: 12px;
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 32px;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
         }
 
@@ -140,11 +150,12 @@
             display: none;
             background: white;
             border-radius: 16px;
-            padding: 48px;
+            padding: 24px 16px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             border: 1px solid #e5e7eb;
             margin-bottom: 32px;
             animation: fadeIn 0.3s ease;
+            width: 100%;
         }
 
         .tool-section.active {
@@ -159,19 +170,19 @@
         .tool-section h2 {
             color: #111827;
             margin-bottom: 8px;
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 800;
             letter-spacing: -0.025em;
         }
 
         .tool-section .subtitle {
             color: #6b7280;
-            margin-bottom: 32px;
-            font-size: 1rem;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
         }
 
         .input-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .input-group label {
@@ -566,36 +577,182 @@
 
         @media (max-width: 768px) {
             .nav-container {
-                flex-direction: column;
+                flex-direction: row;
                 height: auto;
-                padding: 16px;
-                gap: 12px;
+                padding: 12px 12px;
+                gap: 8px;
             }
 
-            .tool-links {
-                justify-content: center;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
+            .logo {
                 font-size: 1rem;
             }
 
+            .tool-links {
+                justify-content: flex-end;
+                gap: 2px;
+            }
+
+            .tool-links a {
+                font-size: 0.65rem;
+                padding: 4px 6px;
+            }
+
+            .hero {
+                padding: 20px 0 30px;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+                margin-bottom: 12px;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .container {
+                padding: 20px 12px 140px;
+            }
+
             .tool-section {
-                padding: 32px 24px;
+                padding: 16px 12px;
+                margin-bottom: 20px;
+            }
+
+            .tool-section h2 {
+                font-size: 1.4rem;
+                margin-bottom: 6px;
+            }
+
+            .tool-section .subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 16px;
+            }
+
+            .input-group {
+                margin-bottom: 16px;
+            }
+
+            .input-group label {
+                font-size: 0.9rem;
+                margin-bottom: 6px;
+            }
+
+            .input-group input,
+            .input-group textarea,
+            .input-group select {
+                font-size: 16px !important;
+            }
+
+            .btn {
+                padding: 12px 24px !important;
+                font-size: 0.95rem !important;
             }
 
             .tools-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+            }
+
+            .stats-banner {
+                font-size: 0.9rem;
+                padding: 12px 12px;
+                margin-bottom: 20px;
+            }
+
+            footer {
+                padding: 20px 12px;
             }
 
             footer a {
-                display: block;
-                margin: 8px 0;
+                display: inline;
+                margin: 0 4px;
             }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 10px 10px;
+                height: auto;
+            }
+
+            .logo {
+                font-size: 0.9rem;
+            }
+
+            .tool-links {
+                gap: 1px;
+            }
+
+            .tool-links a {
+                font-size: 0.6rem;
+                padding: 3px 5px;
+                margin: 2px 1px;
+            }
+
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+
+            .hero p {
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding: 16px 10px 140px;
+            }
+
+            .tool-section {
+                padding: 12px 10px;
+                border-radius: 12px;
+            }
+
+            .tool-section h2 {
+                font-size: 1.2rem;
+            }
+
+            .input-group label {
+                font-size: 0.8rem;
+            }
+
+            .btn {
+                padding: 10px 16px !important;
+                font-size: 0.9rem !important;
+            }
+        }
+
+        /* BACK TO TOP BUTTON */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #back-to-top.show {
+            display: flex;
+        }
+
+        #back-to-top:hover {
+            background: #1e40af;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        #back-to-top:active {
+            transform: translateY(0);
         }
     </style>
     <script type="application/ld+json">
@@ -2305,6 +2462,30 @@
             const selectedUsername = usernameOptions[selectedUsernameOption].textContent.split('] ').pop();
             shareToolWithMessage('username', selectedUsername);
         }
+
+        // BACK TO TOP BUTTON
+        const backToTopBtn = document.createElement('button');
+        backToTopBtn.id = 'back-to-top';
+        backToTopBtn.textContent = '↑';
+        backToTopBtn.title = 'Back to top';
+        document.body.appendChild(backToTopBtn);
+
+        // Show/hide back to top button
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Scroll to top smoothly
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
 </body>
 </html>
