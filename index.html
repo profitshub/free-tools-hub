@@ -646,6 +646,16 @@
             .expand-btn {
                 display: block;
             }
+
+            .how-to-use-grid {
+                grid-template-columns: 1fr !important;
+                justify-items: center !important;
+            }
+
+            .how-to-use-grid > div {
+                width: 100%;
+                max-width: 280px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1000,7 +1010,7 @@
             <div style="background: linear-gradient(135deg, #f0f9ff 0%, #f3f4f6 100%); margin-top: 48px; padding: 32px; border-radius: 16px;">
                 <h2 style="color: #1e40af; margin-bottom: 24px;">How to Use ToolsHub - Your Free Online Tools Guide</h2>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 24px;">
+                <div class="how-to-use-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 24px;">
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">🔐 Password Generator</h3>
                         <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
