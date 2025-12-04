@@ -1388,6 +1388,9 @@
             const shareMessage = SHARE_MESSAGES[toolName] || `Check out this amazing FREE tool on ToolsHub! ${content}`;
             
             const shareText = `${shareMessage}\n\n🔗 Visit ToolsHub: https://tools-hub-pro.netlify.app`;
+            const shareUrl = 'https://tools-hub-pro.netlify.app';
+            const encodedText = encodeURIComponent(shareText);
+            const encodedUrl = encodeURIComponent(shareUrl);
             
             // Create share modal
             const shareModal = document.createElement('div');
@@ -1406,64 +1409,178 @@
             `;
             
             shareModal.innerHTML = `
-                <div style="background: white; padding: 48px; border-radius: 16px; max-width: 500px; text-align: center; animation: slideUp 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                <div style="background: white; padding: 48px; border-radius: 16px; max-width: 550px; text-align: center; animation: slideUp 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
                     <div style="font-size: 3rem; margin-bottom: 20px;">📢</div>
-                    <h2 style="color: #111827; margin-bottom: 16px; font-size: 1.75rem; font-weight: 800;">Share the Love! 💚</h2>
-                    <p style="color: #6b7280; font-size: 1rem; margin-bottom: 24px; line-height: 1.6; background: #f3f4f6; padding: 16px; border-radius: 8px; text-align: left; font-family: monospace; font-size: 0.875rem;">
-                        "${shareMessage}"
+                    <h2 style="color: #111827; margin-bottom: 16px; font-size: 1.75rem; font-weight: 800;">Share ToolsHub With Friends!</h2>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5;">
+                        Help spread the word about our FREE tools! Choose your favorite platform:
                     </p>
-                    <button id="copy-share-btn" style="
-                        background: #2563eb;
+                    
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener noreferrer" style="
+                            background: #1877f2;
+                            color: white;
+                            padding: 16px 12px;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.85rem;
+                        " onmouseover="this.style.background='#1565d8'" onmouseout="this.style.background='#1877f2'">
+                            👍 Facebook
+                        </a>
+                        
+                        <a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}" target="_blank" rel="noopener noreferrer" style="
+                            background: #000000;
+                            color: white;
+                            padding: 16px 12px;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.85rem;
+                        " onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='#000000'">
+                            𝕏 Twitter
+                        </a>
+                        
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}" target="_blank" rel="noopener noreferrer" style="
+                            background: #0a66c2;
+                            color: white;
+                            padding: 16px 12px;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.85rem;
+                        " onmouseover="this.style.background='#084399'" onmouseout="this.style.background='#0a66c2'">
+                            💼 LinkedIn
+                        </a>
+                        
+                        <a href="https://wa.me/?text=${encodedText}" target="_blank" rel="noopener noreferrer" style="
+                            background: #25d366;
+                            color: white;
+                            padding: 16px 12px;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.85rem;
+                        " onmouseover="this.style.background='#1fa854'" onmouseout="this.style.background='#25d366'">
+                            💬 WhatsApp
+                        </a>
+                        
+                        <a href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedText}" target="_blank" rel="noopener noreferrer" style="
+                            background: #ff4500;
+                            color: white;
+                            padding: 16px 12px;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.85rem;
+                        " onmouseover="this.style.background='#cc3700'" onmouseout="this.style.background='#ff4500'">
+                            🔗 Reddit
+                        </a>
+                        
+                        <button id="copy-share-btn" style="
+                            background: #6366f1;
+                            color: white;
+                            padding: 16px 12px;
+                            border: none;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: all 0.2s;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.85rem;
+                            font-family: inherit;
+                        " onmouseover="this.style.background='#4f46e5'" onmouseout="this.style.background='#6366f1'">
+                            📋 Copy Text
+                        </button>
+                    </div>
+                    
+                    <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 16px;">
+                        After sharing, you'll get instant access to your result! ✨
+                    </p>
+                    
+                    <button id="continue-btn" style="
+                        background: #10b981;
                         color: white;
                         border: none;
-                        padding: 16px 48px;
-                        font-size: 1.0625rem;
+                        padding: 14px 40px;
+                        font-size: 1rem;
                         font-weight: 600;
                         border-radius: 8px;
                         cursor: pointer;
                         transition: all 0.2s;
                         width: 100%;
                         font-family: inherit;
-                        margin-bottom: 12px;
-                    ">
-                        📋 Copy Share Text
-                    </button>
-                    <button id="skip-share-btn" style="
-                        background: #e5e7eb;
-                        color: #111827;
-                        border: none;
-                        padding: 12px 36px;
-                        font-size: 1rem;
-                        font-weight: 500;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        transition: all 0.2s;
-                        width: 100%;
-                        font-family: inherit;
-                    ">
-                        Skip for Now
+                    " onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">
+                        ✓ I've Shared! Get My Result →
                     </button>
                 </div>
             `;
             
             document.body.appendChild(shareModal);
             
+            // Copy button functionality
             document.getElementById('copy-share-btn').addEventListener('click', () => {
                 navigator.clipboard.writeText(shareText);
-                shareModal.remove();
                 showMessage('share-success');
-                trackEvent('shared_tool', { tool: toolName });
+                trackEvent('shared_tool_copied', { tool: toolName });
+            });
+            
+            // Continue button - MANDATORY after sharing
+            document.getElementById('continue-btn').addEventListener('click', () => {
+                shareModal.remove();
+                trackEvent('shared_and_continued', { tool: toolName });
                 
-                // Continue with monetization flow after a delay
+                // Continue with monetization flow
                 setTimeout(() => {
                     showMonetizationGate(content, `${toolName}CopyMsg`);
                 }, 500);
             });
             
-            document.getElementById('skip-share-btn').addEventListener('click', () => {
-                shareModal.remove();
-                // Continue with monetization flow
-                showMonetizationGate(content, `${toolName}CopyMsg`);
+            // Track when social shares happen
+            const socialLinks = shareModal.querySelectorAll('a[href*="facebook"], a[href*="twitter"], a[href*="linkedin"], a[href*="wa.me"], a[href*="reddit"]');
+            socialLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const platform = link.href.includes('facebook') ? 'facebook' :
+                                   link.href.includes('twitter') ? 'twitter' :
+                                   link.href.includes('linkedin') ? 'linkedin' :
+                                   link.href.includes('wa.me') ? 'whatsapp' : 'reddit';
+                    trackEvent('shared_on_' + platform, { tool: toolName });
+                    
+                    // Open and then continue flow
+                    setTimeout(() => {
+                        if (!shareModal.parentNode) return; // Already removed
+                        shareModal.remove();
+                        showMonetizationGate(content, `${toolName}CopyMsg`);
+                    }, 1000);
+                });
             });
         }
 
