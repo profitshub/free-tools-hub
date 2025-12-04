@@ -1769,15 +1769,54 @@
             id: 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
             toolsUsed: [],
             engagementScore: 0,
-            startTime: Date.now()
+            startTime: Date.now(),
+            firstActionDone: false,
+            exitIntentShown: false
         };
 
         // ===== MONETIZATION CONFIGURATION =====
         const MONETAG_CONFIG = {
             directLink: 'https://otieu.com/4/10275514',
-            openInNewTab: true,
-            triggerOnFirstCopy: true,
+            openInNewTab: true
         };
+
+        // Initialize visitor tracking with localStorage
+        function initVisitorTracking() {
+            let visitorData = JSON.parse(localStorage.getItem('toolshub_visitor') || '{}');
+            
+            if (!visitorData.id) {
+                visitorData = {
+                    id: 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    firstVisit: Date.now(),
+                    visitCount: 1,
+                    lastVisit: Date.now(),
+                    hasClickedMonetag: false,
+                    monetagClickedTime: null
+                };
+            } else {
+                visitorData.visitCount += 1;
+                visitorData.lastVisit = Date.now();
+            }
+            
+            localStorage.setItem('toolshub_visitor', JSON.stringify(visitorData));
+            return visitorData;
+        }
+
+        const VISITOR_DATA = initVisitorTracking();
+
+        function isReturningVisitor() {
+            return VISITOR_DATA.visitCount > 1;
+        }
+
+        function hasClickedMonetag() {
+            return VISITOR_DATA.hasClickedMonetag;
+        }
+
+        function markMonetClicked() {
+            VISITOR_DATA.hasClickedMonetag = true;
+            VISITOR_DATA.monetagClickedTime = Date.now();
+            localStorage.setItem('toolshub_visitor', JSON.stringify(VISITOR_DATA));
+        }
 
         function isUnlocked() {
             return sessionStorage.getItem('premium_unlocked') === 'true';
@@ -2745,6 +2784,240 @@
                 behavior: 'smooth'
             });
         });
+
+        // ===== HYBRID TRAFFIC ARBITRAGE MONETIZATION SYSTEM =====
+        
+        // 1. FIRST ACTION REDIRECT - On first button click
+        function setupFirstActionRedirect() {
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+                
+                // Detect tool buttons
+                const isToolButton = target.classList.contains('btn') || 
+                                    target.textContent.includes('Generate') || 
+                                    target.textContent.includes('Calculate') ||
+                                    target.textContent.includes('Convert') ||
+                                    target.textContent.includes('Count') ||
+                                    target.textContent.includes('Create');
+                
+                if (isToolButton && !SESSION.firstActionDone && !isReturningVisitor()) {
+                    SESSION.firstActionDone = true;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    showFirstActionModal(e.target);
+                    trackEvent('first_action_detected', { buttonText: target.textContent });
+                }
+            }, true);
+        }
+
+        function showFirstActionModal(originalButton) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.85);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10001;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 48px; border-radius: 16px; max-width: 500px; text-align: center; animation: slideUp 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="font-size: 3.5rem; margin-bottom: 20px;">🎉</div>
+                    <h2 style="color: #111827; margin-bottom: 16px; font-size: 1.75rem; font-weight: 800;">One Quick Step!</h2>
+                    <p style="color: #6b7280; font-size: 1rem; margin-bottom: 32px; line-height: 1.6;">
+                        Verify you're human and unlock unlimited tool access forever.
+                    </p>
+                    <button id="first-action-cta" style="
+                        background: #2563eb;
+                        color: white;
+                        border: none;
+                        padding: 16px 48px;
+                        font-size: 1.0625rem;
+                        font-weight: 600;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        width: 100%;
+                        font-family: inherit;
+                    ">
+                        Continue to Tool →
+                    </button>
+                    <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 16px;">
+                        ✓ Takes 10 seconds | ✓ Completely free
+                    </p>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            trackEvent('first_action_modal_shown');
+            
+            document.getElementById('first-action-cta').addEventListener('click', () => {
+                trackEvent('first_action_monetag_clicked');
+                markMonetClicked();
+                window.open(MONETAG_CONFIG.directLink, '_blank');
+                markAsUnlocked();
+                modal.remove();
+                
+                // Execute original action after delay
+                setTimeout(() => {
+                    originalButton.click();
+                }, 500);
+            });
+        }
+
+        // 2. EXIT INTENT MODAL
+        function setupExitIntentModal() {
+            let exitIntentShown = false;
+            const timeOnPage = 8000;
+            let pageLoadTime = Date.now();
+
+            document.addEventListener('mouseleave', (e) => {
+                if (e.clientY <= 0 && !exitIntentShown && (Date.now() - pageLoadTime) > timeOnPage) {
+                    if (!SESSION.firstActionDone) {
+                        showExitIntentModal();
+                        exitIntentShown = true;
+                        SESSION.exitIntentShown = true;
+                    }
+                }
+            });
+        }
+
+        function showExitIntentModal() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.85);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 48px; border-radius: 16px; max-width: 500px; text-align: center; animation: slideUp 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative;">
+                    <button onclick="this.closest('div').parentElement.remove()" style="position: absolute; top: 15px; right: 20px; border: none; background: none; font-size: 32px; cursor: pointer; color: #999;">×</button>
+                    <div style="font-size: 3.5rem; margin-bottom: 20px;">⚡</div>
+                    <h2 style="color: #111827; margin-bottom: 16px; font-size: 1.75rem; font-weight: 800;">Wait! Don't Leave</h2>
+                    <p style="color: #6b7280; font-size: 1rem; margin-bottom: 32px; line-height: 1.6;">
+                        Get instant access to all tools - completely free!
+                    </p>
+                    <button id="exit-intent-cta" style="
+                        background: #2563eb;
+                        color: white;
+                        border: none;
+                        padding: 16px 48px;
+                        font-size: 1.0625rem;
+                        font-weight: 600;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        width: 100%;
+                        font-family: inherit;
+                    ">
+                        Unlock Tools Now →
+                    </button>
+                    <p style="color: #9ca3af; font-size: 0.875rem; margin-top: 16px;">
+                        ✓ No credit card | ✓ One-time verification
+                    </p>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            trackEvent('exit_intent_modal_shown');
+            
+            document.getElementById('exit-intent-cta').addEventListener('click', () => {
+                trackEvent('exit_intent_monetag_clicked');
+                markMonetClicked();
+                window.open(MONETAG_CONFIG.directLink, '_blank');
+                markAsUnlocked();
+                modal.remove();
+            });
+        }
+
+        // 3. RETURNING VISITOR CTA
+        function setupReturningVisitorFlow() {
+            if (isReturningVisitor()) {
+                document.addEventListener('click', (e) => {
+                    const target = e.target;
+                    const isToolButton = target.classList.contains('btn') || 
+                                        target.textContent.includes('Generate') || 
+                                        target.textContent.includes('Calculate');
+                    
+                    if (isToolButton) {
+                        showReturningVisitorNotification();
+                    }
+                }, { once: true });
+                
+                trackEvent('returning_visitor', { visitCount: VISITOR_DATA.visitCount });
+            }
+        }
+
+        function showReturningVisitorNotification() {
+            if (document.getElementById('returning-visitor-banner')) return;
+            
+            const banner = document.createElement('div');
+            banner.id = 'returning-visitor-banner';
+            banner.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: #2563eb;
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+                z-index: 9999;
+                font-size: 0.95rem;
+                animation: slideInRight 0.4s ease;
+                cursor: pointer;
+                max-width: 280px;
+            `;
+            
+            banner.innerHTML = `<strong>💎 Unlock Premium</strong><br/>Click to verify and unlock all tools`;
+            
+            banner.addEventListener('click', () => {
+                trackEvent('returning_visitor_monetag_clicked');
+                markMonetClicked();
+                window.open(MONETAG_CONFIG.directLink, '_blank');
+                banner.remove();
+            });
+            
+            document.body.appendChild(banner);
+            
+            setTimeout(() => {
+                if (banner.parentElement) banner.remove();
+            }, 8000);
+        }
+
+        // 4. INITIALIZE MONETIZATION
+        function initMonetizationSystem() {
+            setupFirstActionRedirect();
+            setupExitIntentModal();
+            setupReturningVisitorFlow();
+            
+            trackEvent('monetization_system_initialized', {
+                isReturning: isReturningVisitor(),
+                visitCount: VISITOR_DATA.visitCount
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMonetizationSystem);
+        } else {
+            initMonetizationSystem();
+        }
     </script>
 </body>
 </html>
