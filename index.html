@@ -112,6 +112,7 @@
             gap: 5px;
             padding: 8px;
             z-index: 101;
+            order: 3;
         }
 
         .hamburger span {
@@ -625,15 +626,15 @@
             .tool-links {
                 position: fixed;
                 top: 64px;
-                right: 0;
+                left: 0;
                 width: 250px;
                 height: calc(100vh - 64px);
                 background: white;
                 flex-direction: column;
                 gap: 0;
-                padding: 16px 0;
-                box-shadow: -2px 0 8px rgba(0,0,0,0.1);
-                transform: translateX(100%);
+                padding: 0;
+                box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+                transform: translateX(-100%);
                 transition: transform 0.3s ease;
                 z-index: 100;
                 overflow-y: auto;
@@ -728,7 +729,7 @@
             }
 
             #back-to-top {
-                bottom: 110px;
+                bottom: 120px;
                 right: 15px;
                 width: 45px;
                 height: 45px;
@@ -781,7 +782,7 @@
             }
 
             #back-to-top {
-                bottom: 120px;
+                bottom: 130px;
                 right: 12px;
                 width: 40px;
                 height: 40px;
