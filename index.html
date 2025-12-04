@@ -658,6 +658,41 @@
             }
         }
 
+        /* BACK TO TOP BUTTON - DEFINED BEFORE MEDIA QUERIES */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #back-to-top.show {
+            display: flex;
+        }
+
+        #back-to-top:hover {
+            background: #1e40af;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        }
+
+        #back-to-top:active {
+            transform: translateY(0);
+        }
+
         @media (max-width: 768px) {
             .hamburger {
                 display: flex;
@@ -848,41 +883,6 @@
                 height: 40px;
                 font-size: 20px;
             }
-        }
-
-        /* BACK TO TOP BUTTON */
-        #back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 20px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-            cursor: pointer;
-            display: none;
-            z-index: 99;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-            transition: all 0.3s ease;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #back-to-top.show {
-            display: flex;
-        }
-
-        #back-to-top:hover {
-            background: #1e40af;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
-        }
-
-        #back-to-top:active {
-            transform: translateY(0);
         }
     </style>
     <script type="application/ld+json">
