@@ -577,24 +577,30 @@
 
         @media (max-width: 768px) {
             .nav-container {
-                flex-direction: row;
+                flex-direction: column;
                 height: auto;
                 padding: 12px 12px;
-                gap: 8px;
+                gap: 12px;
             }
 
             .logo {
-                font-size: 1rem;
+                font-size: 1.1rem;
+                width: 100%;
+                text-align: center;
             }
 
             .tool-links {
-                justify-content: flex-end;
-                gap: 2px;
+                flex-direction: column;
+                width: 100%;
+                gap: 0;
+                justify-content: center;
             }
 
             .tool-links a {
-                font-size: 0.65rem;
-                padding: 4px 6px;
+                font-size: 0.8rem;
+                padding: 8px 12px;
+                width: 100%;
+                text-align: center;
             }
 
             .hero {
@@ -611,7 +617,7 @@
             }
 
             .container {
-                padding: 20px 12px 140px;
+                padding: 20px 12px 180px;
             }
 
             .tool-section {
@@ -667,26 +673,40 @@
                 display: inline;
                 margin: 0 4px;
             }
+
+            #back-to-top {
+                bottom: 100px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
         }
 
         @media (max-width: 480px) {
             .nav-container {
-                padding: 10px 10px;
+                flex-direction: column;
+                padding: 12px 10px;
                 height: auto;
+                gap: 10px;
             }
 
             .logo {
-                font-size: 0.9rem;
+                font-size: 1rem;
+                width: 100%;
+                text-align: center;
             }
 
             .tool-links {
-                gap: 1px;
+                flex-direction: column;
+                width: 100%;
+                gap: 0;
             }
 
             .tool-links a {
-                font-size: 0.6rem;
-                padding: 3px 5px;
-                margin: 2px 1px;
+                font-size: 0.75rem;
+                padding: 6px 8px;
+                width: 100%;
+                text-align: center;
             }
 
             .hero h1 {
@@ -698,7 +718,7 @@
             }
 
             .container {
-                padding: 16px 10px 140px;
+                padding: 16px 10px 180px;
             }
 
             .tool-section {
@@ -717,6 +737,14 @@
             .btn {
                 padding: 10px 16px !important;
                 font-size: 0.9rem !important;
+            }
+
+            #back-to-top {
+                bottom: 110px;
+                right: 12px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
             }
         }
 
