@@ -2946,19 +2946,13 @@
             });
         }
 
-        // 3. RETURNING VISITOR CTA
+        // 3. RETURNING VISITOR CTA - Always monetize
         function setupReturningVisitorFlow() {
             if (isReturningVisitor()) {
-                document.addEventListener('click', (e) => {
-                    const target = e.target;
-                    const isToolButton = target.classList.contains('btn') || 
-                                        target.textContent.includes('Generate') || 
-                                        target.textContent.includes('Calculate');
-                    
-                    if (isToolButton) {
-                        showReturningVisitorNotification();
-                    }
-                }, { once: true });
+                // Show banner immediately on page load for returning visitors
+                setTimeout(() => {
+                    showReturningVisitorNotification();
+                }, 2000); // Show after 2 seconds
                 
                 trackEvent('returning_visitor', { visitCount: VISITOR_DATA.visitCount });
             }
