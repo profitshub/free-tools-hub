@@ -57,7 +57,7 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
             border-bottom: 1px solid #e5e7eb;
         }
 
@@ -636,8 +636,10 @@
                 box-shadow: 2px 0 8px rgba(0,0,0,0.1);
                 transform: translateX(-100%);
                 transition: transform 0.3s ease;
-                z-index: 100;
+                z-index: 99;
                 overflow-y: auto;
+                align-items: flex-start;
+                justify-content: flex-start;
             }
 
             .tool-links.active {
@@ -651,6 +653,7 @@
                 text-align: left;
                 border-bottom: 1px solid #e5e7eb;
                 transition: background 0.2s;
+                display: block;
             }
 
             .tool-links a:hover {
@@ -672,6 +675,7 @@
 
             .container {
                 padding: 20px 12px 180px;
+                z-index: 50;
             }
 
             .tool-section {
@@ -744,11 +748,19 @@
             .tool-links {
                 width: 220px;
                 top: 56px;
+                align-items: flex-start;
+                justify-content: flex-start;
             }
 
             .tool-links a {
                 font-size: 0.9rem;
                 padding: 10px 14px;
+                display: block;
+            }
+
+            .container {
+                padding: 16px 10px 180px;
+                z-index: 50;
             }
 
             .hero h1 {
@@ -757,10 +769,6 @@
 
             .hero p {
                 font-size: 0.85rem;
-            }
-
-            .container {
-                padding: 16px 10px 180px;
             }
 
             .tool-section {
