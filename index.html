@@ -607,6 +607,47 @@
             color: #2563eb;
         }
 
+        .tool-card-desc {
+            display: block;
+            max-height: none;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .tool-card-desc.collapsed {
+            max-height: 0;
+        }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            color: #2563eb;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 0;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .expand-btn:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .tool-card-desc {
+                max-height: 0;
+            }
+
+            .tool-card-desc.expanded {
+                max-height: 500px;
+            }
+
+            .expand-btn {
+                display: block;
+            }
+        }
+
         @media (max-width: 768px) {
             .hamburger {
                 display: flex;
@@ -962,65 +1003,74 @@
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 24px;">
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">🔐 Password Generator</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Need a secure password? Our password generator creates strong, random passwords in seconds. Adjust the length from 8 to 32 characters and choose what character types to include (uppercase, lowercase, numbers, symbols). Perfect for creating secure account passwords for any online service.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">📱 QR Code Generator</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Convert any text, URL, or contact information into a scannable QR code instantly. Great for marketing materials, event tickets, contact cards, or sharing links without typing. Users can scan with any smartphone camera to instantly access your content.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">📝 Text Case Converter</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Instantly convert text between different cases: UPPERCASE for headings, lowercase for URLs, Title Case for professional documents. Supports multiple text transformation options to match any formatting requirement.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">📊 Word Counter</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Analyze your writing with real-time statistics: word count, character count, sentence count, paragraph count, and reading time estimate. Perfect for students, writers, and content creators who need to meet specific writing requirements.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">🧮 Quick Calculators</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Calculate instantly with our collection of useful calculators: BMI calculator for health tracking, tip calculator for restaurants, age calculator to find exact age in years and days. All results are displayed clearly and can be easily copied.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">📸 Instagram Bio Generator</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Create professional and catchy Instagram bios that grab attention. Tell us your occupation, interests, style, and emoji preference, and we'll generate multiple bio options you can customize and use immediately to boost your profile.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">💬 Caption Generator</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Generate engaging captions for all your social media posts. Whether you're sharing a sunset photo, promoting a product, or posting a workout selfie, our generator creates captions with the right mood and tone to maximize engagement.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">🏷️ Hashtag Generator</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Discover and generate trending hashtags to increase your post visibility. Our hashtag generator finds relevant, popular tags for your content, helping you reach more users and grow your social media presence faster.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
 
                     <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #2563eb;">
                         <h3 style="color: #2563eb; margin-bottom: 12px; font-size: 1.1rem;">👤 Username Generator</h3>
-                        <p style="color: #4b5563; line-height: 1.6; font-size: 0.95rem;">
+                        <p class="tool-card-desc expanded" style="color: #4b5563; line-height: 1.6; font-size: 0.95rem; margin: 0;">
                             Need a unique username for social media? Our username generator creates creative, memorable usernames based on your interests and preferences. Perfect for finding available handles across all platforms - Instagram, Twitter, TikTok, and more.
                         </p>
+                        <button class="expand-btn" onclick="toggleCard(this)">+ More</button>
                     </div>
                 </div>
 
@@ -1695,6 +1745,13 @@
             document.getElementById(toolName).classList.add('active');
             trackEvent('tool_accessed', { tool: toolName });
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // TOGGLE CARD DESCRIPTION ON MOBILE
+        function toggleCard(btn) {
+            const desc = btn.previousElementSibling;
+            desc.classList.toggle('expanded');
+            btn.textContent = desc.classList.contains('expanded') ? '- Less' : '+ More';
         }
 
         // TRACKING & MONETIZATION
