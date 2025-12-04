@@ -646,6 +646,7 @@
     </nav>
 
     <div class="container">
+        <div class="success-msg" id="share-success" style="background: #10b981; color: white;">✓ Share text copied! You're helping spread the word! 🎉</div>
         <!-- HOME -->
         <div class="tool-section active" id="home">
             <div class="hero">
@@ -1370,6 +1371,102 @@
             sessionStorage.setItem('premium_unlocked', 'true');
         }
 
+        // SHARE FEATURE WITH PRE-WRITTEN TEXT
+        const SHARE_MESSAGES = {
+            password: "🔐 Just generated a super secure password using ToolsHub! Check out this amazing FREE password generator - it's quick, easy, and generates super strong passwords instantly. No sign-up needed! 🚀",
+            qr: "📱 I just created a QR code using ToolsHub's FREE QR Code Generator! It's so simple and works perfectly. Perfect for marketing, events, and more. Check it out! ✨",
+            text: "✨ Just converted my text using ToolsHub's FREE Text Case Converter! It instantly converts between UPPERCASE, lowercase, Title Case, and more. Amazing tool! 🎯",
+            word_counter: "📊 I'm using ToolsHub's FREE Word Counter to track my writing stats! It counts words, characters, sentences, paragraphs, and even read time. So useful! 📈",
+            calculators: "🧮 Just used ToolsHub's FREE calculators - BMI, Tip, Age calculators and more, all in one place! No apps needed, just instant results. Love it! 💯",
+            instagram_bio: "📸 I just generated the perfect Instagram bio using ToolsHub! It has customizable templates for professional, casual, creative vibes - all FREE! Check it out! 🌟",
+            caption: "💬 Found the PERFECT caption using ToolsHub's FREE Caption Generator! Multiple moods, lengths, and styles - get engaging captions in seconds! 🎉",
+            hashtag: "🏷️ I just got 30 perfect hashtags from ToolsHub's FREE Hashtag Generator! Mix of popular and niche tags for maximum reach. Game changer! 🚀",
+            username: "👤 Just generated cool usernames using ToolsHub's FREE Username Generator! Professional, creative, gaming styles - all instant! Check it out! 😎"
+        };
+
+        function shareToolWithMessage(toolName, content) {
+            const shareMessage = SHARE_MESSAGES[toolName] || `Check out this amazing FREE tool on ToolsHub! ${content}`;
+            
+            const shareText = `${shareMessage}\n\n🔗 Visit ToolsHub: https://tools-hub-pro.netlify.app`;
+            
+            // Create share modal
+            const shareModal = document.createElement('div');
+            shareModal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10001;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            shareModal.innerHTML = `
+                <div style="background: white; padding: 48px; border-radius: 16px; max-width: 500px; text-align: center; animation: slideUp 0.4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">📢</div>
+                    <h2 style="color: #111827; margin-bottom: 16px; font-size: 1.75rem; font-weight: 800;">Share the Love! 💚</h2>
+                    <p style="color: #6b7280; font-size: 1rem; margin-bottom: 24px; line-height: 1.6; background: #f3f4f6; padding: 16px; border-radius: 8px; text-align: left; font-family: monospace; font-size: 0.875rem;">
+                        "${shareMessage}"
+                    </p>
+                    <button id="copy-share-btn" style="
+                        background: #2563eb;
+                        color: white;
+                        border: none;
+                        padding: 16px 48px;
+                        font-size: 1.0625rem;
+                        font-weight: 600;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        width: 100%;
+                        font-family: inherit;
+                        margin-bottom: 12px;
+                    ">
+                        📋 Copy Share Text
+                    </button>
+                    <button id="skip-share-btn" style="
+                        background: #e5e7eb;
+                        color: #111827;
+                        border: none;
+                        padding: 12px 36px;
+                        font-size: 1rem;
+                        font-weight: 500;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        width: 100%;
+                        font-family: inherit;
+                    ">
+                        Skip for Now
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(shareModal);
+            
+            document.getElementById('copy-share-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(shareText);
+                shareModal.remove();
+                showMessage('share-success');
+                trackEvent('shared_tool', { tool: toolName });
+                
+                // Continue with monetization flow after a delay
+                setTimeout(() => {
+                    showMonetizationGate(content, `${toolName}CopyMsg`);
+                }, 500);
+            });
+            
+            document.getElementById('skip-share-btn').addEventListener('click', () => {
+                shareModal.remove();
+                // Continue with monetization flow
+                showMonetizationGate(content, `${toolName}CopyMsg`);
+            });
+        }
+
         function showMonetizationGate(contentToCopy, successMsgId) {
             if (isUnlocked()) {
                 navigator.clipboard.writeText(contentToCopy);
@@ -1565,7 +1662,7 @@
 
         function copyPassword() {
             const password = document.getElementById('passwordText').textContent;
-            showMonetizationGate(password, 'passwordCopyMsg');
+            shareToolWithMessage('password', password);
         }
 
         // QR CODE GENERATOR
@@ -1640,7 +1737,7 @@
 
         function copyText() {
             const text = document.getElementById('textOutput').textContent;
-            showMonetizationGate(text, 'textCopyMsg');
+            shareToolWithMessage('text', text);
         }
 
         // WORD COUNTER
@@ -1828,7 +1925,7 @@
         function copyBio() {
             const bioOptions = document.getElementById('bioOptions').children;
             const selectedBio = bioOptions[selectedBioOption].textContent.split('] ').pop();
-            showMonetizationGate(selectedBio, 'bioCopyMsg');
+            shareToolWithMessage('instagram_bio', selectedBio);
         }
 
         // CAPTION GENERATOR
@@ -1953,7 +2050,7 @@
         function copyCaption() {
             const captionOptions = document.getElementById('captionOptions').children;
             const selectedCaption = captionOptions[selectedCaptionOption].textContent.split('] ').pop();
-            showMonetizationGate(selectedCaption, 'captionCopyMsg');
+            shareToolWithMessage('caption', selectedCaption);
         }
 
         // HASHTAG GENERATOR
@@ -2089,7 +2186,7 @@
         function copyUsername() {
             const usernameOptions = document.getElementById('usernameOptions').children;
             const selectedUsername = usernameOptions[selectedUsernameOption].textContent.split('] ').pop();
-            showMonetizationGate(selectedUsername, 'usernameCopyMsg');
+            shareToolWithMessage('username', selectedUsername);
         }
     </script>
 </body>
