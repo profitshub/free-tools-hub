@@ -1020,29 +1020,17 @@
 
             <div class="input-group">
                 <label>Your Name or Keyword:</label>
-                <input type="text" id="usernameKeyword" placeholder="e.g., Alex, TechGuru, FitLife">
+                <input type="text" id="usernameInput" placeholder="e.g., Alex, TechGuru, FitLife">
             </div>
 
             <div class="input-group">
                 <label>Style:</label>
                 <select id="usernameStyle">
-                    <option value="simple">Simple & Clean</option>
-                    <option value="creative">Creative & Unique</option>
                     <option value="professional">Professional</option>
-                    <option value="gamer">Gamer Style</option>
-                    <option value="aesthetic">Aesthetic</option>
+                    <option value="creative">Creative & Unique</option>
+                    <option value="gaming">Gaming</option>
+                    <option value="minimal">Minimal</option>
                 </select>
-            </div>
-
-            <div class="checkbox-group">
-                <label>
-                    <input type="checkbox" id="usernameNumbers">
-                    Include numbers
-                </label>
-                <label>
-                    <input type="checkbox" id="usernameUnderscore">
-                    Allow underscores
-                </label>
             </div>
 
             <button class="btn" onclick="generateUsername()">Generate Usernames</button>
@@ -1602,9 +1590,10 @@
             
             if (weight && height) {
                 const bmi = weight / (height * height);
-                document.getElementById('bmiResult').textContent = bmi.toFixed(1);
+                document.getElementById('bmiValue').textContent = bmi.toFixed(1);
                 document.getElementById('bmiCategory').textContent = getBMICategory(bmi);
-                document.getElementById('bmiOutput').style.display = 'block';
+                document.getElementById('bmiResult').style.display = 'block';
+                trackEvent('bmi_calculated', { weight, height, bmi: bmi.toFixed(1) });
             }
         }
         
@@ -1613,6 +1602,415 @@
             if (bmi < 25) return 'Normal weight';
             if (bmi < 30) return 'Overweight';
             return 'Obese';
+        }
+
+        // TIP CALCULATOR
+        function calculateTip() {
+            const billAmount = parseFloat(document.getElementById('billAmount').value);
+            const tipPercent = parseInt(document.getElementById('tipPercent').value);
+            
+            if (billAmount && billAmount > 0) {
+                const tipAmount = (billAmount * tipPercent) / 100;
+                const totalAmount = billAmount + tipAmount;
+                
+                document.getElementById('tipAmount').textContent = '$' + tipAmount.toFixed(2);
+                document.getElementById('totalAmount').textContent = '$' + totalAmount.toFixed(2);
+                document.getElementById('tipResult').style.display = 'block';
+                
+                trackEvent('tip_calculated', { billAmount, tipPercent, tipAmount: tipAmount.toFixed(2) });
+            }
+        }
+
+        // AGE CALCULATOR
+        function calculateAge() {
+            const birthDate = new Date(document.getElementById('birthDate').value);
+            
+            if (!document.getElementById('birthDate').value) {
+                alert('Please select your date of birth');
+                return;
+            }
+            
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            const nextBirthday = new Date(today.getFullYear() + (age + 1), birthDate.getMonth(), birthDate.getDate());
+            const daysUntilBirthday = Math.ceil((nextBirthday - today) / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('ageValue').textContent = age + ' years old';
+            document.getElementById('ageDetails').textContent = 'Next birthday in ' + daysUntilBirthday + ' days';
+            document.getElementById('ageResult').style.display = 'block';
+            
+            trackEvent('age_calculated', { age, daysUntilBirthday });
+        }
+
+        // INSTAGRAM BIO GENERATOR
+        const bioTemplates = {
+            professional: [
+                '{occupation} | {interest} | DM for inquiries',
+                '{occupation} • {interest} • Creating impact',
+                'Professional {occupation} | Passionate about {interest}',
+                '{occupation} | Expert in {interest}',
+                'Your {occupation} guide | {interest} enthusiast'
+            ],
+            casual: [
+                '{occupation} by day 😎 {interest} by night 🌙',
+                '{occupation} • {interest} • Just vibing',
+                'Just a {occupation} who loves {interest}',
+                '{occupation} & {interest} lover ✨',
+                'Living for {interest} | {occupation} life'
+            ],
+            creative: [
+                '🎨 {occupation} | Obsessed with {interest}',
+                '{occupation} with a passion for {interest} ✨',
+                'Creating {interest} | Inspired by {occupation}',
+                '💡 {occupation} | 🌟 {interest}',
+                'Artist by nature, {occupation} by trade | {interest} addict'
+            ],
+            minimalist: [
+                '{occupation}\n{interest}',
+                '{occupation} • {interest}',
+                '{occupation}/{interest}',
+                '{occupation} + {interest}',
+                '{occupation} | {interest}'
+            ],
+            motivational: [
+                '{occupation} | Making {interest} a reality 💪',
+                'Inspiring through {interest} | {occupation}',
+                'Dream big. {occupation}. Achieve {interest}.',
+                'Chasing {interest} | {occupation} mindset',
+                'Empowering others through {occupation} & {interest} 🚀'
+            ],
+            funny: [
+                '{occupation} • {interest} • Probably procrastinating 😂',
+                '{occupation} by choice, {interest} by obsession',
+                'Professional {occupation} | Amateur at {interest}',
+                '{occupation} ☕ | {interest} 🔥 | Life 🎉',
+                'Certified {occupation} | {interest} enthusiast | Meme collector'
+            ]
+        };
+
+        function generateBio() {
+            const occupation = document.getElementById('bioOccupation').value.trim();
+            const interest = document.getElementById('bioInterest').value.trim();
+            const style = document.getElementById('bioStyle').value;
+            const emojis = document.getElementById('bioEmojis').value === 'yes';
+            
+            if (!occupation || !interest) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const templates = bioTemplates[style] || bioTemplates.professional;
+            const options = [];
+            
+            for (let i = 0; i < Math.min(3, templates.length); i++) {
+                let bio = templates[i]
+                    .replace('{occupation}', occupation)
+                    .replace('{interest}', interest);
+                
+                if (!emojis) {
+                    bio = bio.replace(/[😎🌙✨💡🎨🚀☕🔥🎉]/g, '');
+                }
+                
+                options.push(bio);
+            }
+            
+            const bioOptions = document.getElementById('bioOptions');
+            bioOptions.innerHTML = '';
+            
+            options.forEach((bio, index) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 16px; background: #f3f4f6; border-radius: 8px; cursor: pointer; transition: all 0.2s;';
+                div.onmouseover = () => div.style.background = '#e5e7eb';
+                div.onmouseout = () => div.style.background = '#f3f4f6';
+                div.onclick = () => selectBio(index);
+                div.innerHTML = `<input type="radio" name="bioSelect" value="${index}" style="margin-right: 12px;"> ${bio}`;
+                bioOptions.appendChild(div);
+            });
+            
+            document.getElementById('bioResults').style.display = 'block';
+            trackEvent('bio_generated', { style, optionsCount: options.length });
+        }
+
+        let selectedBioOption = 0;
+        
+        function selectBio(index) {
+            selectedBioOption = index;
+            document.querySelectorAll('input[name="bioSelect"]').forEach((radio, i) => {
+                radio.checked = i === index;
+            });
+        }
+        
+        function copyBio() {
+            const bioOptions = document.getElementById('bioOptions').children;
+            const selectedBio = bioOptions[selectedBioOption].textContent.split('] ').pop();
+            showMonetizationGate(selectedBio, 'bioCopyMsg');
+        }
+
+        // CAPTION GENERATOR
+        const captionTemplates = {
+            inspirational: [
+                'Dream big, work hard, stay focused. You got this! 💪✨',
+                'Every moment is a fresh beginning. Make it count.',
+                'Focus on the goal, not the obstacles. 🎯',
+                'You are capable of amazing things.',
+                'Push yourself, because no one else is going to do it for you.'
+            ],
+            funny: [
+                'POV: You actually have your life together 😂',
+                'Current mood: Coffee in hand, confidence in heart ☕💪',
+                'I\'m not weird, I\'m just a limited edition 😎',
+                'Living my best life (or at least trying to) 🤷',
+                'Proof that I actually went outside today 📸'
+            ],
+            casual: [
+                'Just living my life, one day at a time ✨',
+                'Spending time doing what I love 💫',
+                'Keep it simple and stay positive',
+                'Good vibes only ✌️',
+                'Just being me 🌟'
+            ],
+            professional: [
+                'Sharing my latest project and achievements. Let\'s connect! 🤝',
+                'Passionate about what I do. Here\'s what I\'ve been working on.',
+                'Creating value every single day. 🚀',
+                'Excited about this opportunity!',
+                'Let\'s make an impact together.'
+            ],
+            romantic: [
+                'All you need is love ❤️✨',
+                'Grateful for moments like these 💕',
+                'Love the simple things in life 🌹',
+                'Heart full, spirits high ✨💫',
+                'Forever grateful for you 💑'
+            ],
+            motivational: [
+                'Success is not final, failure is not fatal. Keep going! 🔥',
+                'Your only limit is you. Break through it! 💪',
+                'Great things never came from comfort zones. 🚀',
+                'Wake up with determination, go to bed with satisfaction.',
+                'The best time to start was yesterday. The second best is now.'
+            ],
+            sassy: [
+                'Slay or no play 💅✨',
+                'Too glam to give a damn 😎',
+                'I\'m not a backup plan, I\'m a priority 👑',
+                'Serving looks and confidence 🔥',
+                'I\'m a vibe you can\'t find anywhere else 💫'
+            ],
+            mysterious: [
+                'Some mysteries are worth keeping 🌙✨',
+                'Caught in a beautiful dream 🖤',
+                'Still waters run deep 💭',
+                'Lost in thoughts and possibilities 🌌',
+                'Not all who wander are lost 🗺️'
+            ]
+        };
+
+        function generateCaption() {
+            const topic = document.getElementById('captionTopic').value.trim();
+            const mood = document.getElementById('captionMood').value;
+            const emojis = document.getElementById('captionEmojis').checked;
+            const cta = document.getElementById('captionCTA').checked;
+            const questions = document.getElementById('captionQuestions').checked;
+            
+            if (!topic) {
+                alert('Please enter a post topic');
+                return;
+            }
+            
+            let templates = captionTemplates[mood] || captionTemplates.casual;
+            let captions = templates.slice(0, 3).map(cap => cap);
+            
+            if (cta) {
+                captions = captions.map(cap => cap + ' 👉 Link in bio!');
+            }
+            
+            if (questions) {
+                const questions_list = [
+                    'What do you think? 🤔',
+                    'How do you feel about this? 💭',
+                    'What\'s your take? 👇',
+                    'Tell me your thoughts! 💬'
+                ];
+                captions = captions.map(cap => cap + ' ' + questions_list[Math.floor(Math.random() * questions_list.length)]);
+            }
+            
+            if (!emojis) {
+                captions = captions.map(cap => cap.replace(/[😂☕💪🤷📸✨💫🌟❤️🔥💅👑💫🌙✨🖤💭🌌🗺️👉📚💬👇🤔💭]/g, ''));
+            }
+            
+            const captionOptions = document.getElementById('captionOptions');
+            captionOptions.innerHTML = '';
+            
+            captions.forEach((caption, index) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 16px; background: #f3f4f6; border-radius: 8px; cursor: pointer; transition: all 0.2s;';
+                div.onmouseover = () => div.style.background = '#e5e7eb';
+                div.onmouseout = () => div.style.background = '#f3f4f6';
+                div.onclick = () => selectCaption(index);
+                div.innerHTML = `<input type="radio" name="captionSelect" value="${index}" style="margin-right: 12px;"> ${caption}`;
+                captionOptions.appendChild(div);
+            });
+            
+            document.getElementById('captionResults').style.display = 'block';
+            trackEvent('caption_generated', { mood, hasCTA: cta, hasQuestions: questions, optionsCount: captions.length });
+        }
+
+        let selectedCaptionOption = 0;
+        
+        function selectCaption(index) {
+            selectedCaptionOption = index;
+            document.querySelectorAll('input[name="captionSelect"]').forEach((radio, i) => {
+                radio.checked = i === index;
+            });
+        }
+        
+        function copyCaption() {
+            const captionOptions = document.getElementById('captionOptions').children;
+            const selectedCaption = captionOptions[selectedCaptionOption].textContent.split('] ').pop();
+            showMonetizationGate(selectedCaption, 'captionCopyMsg');
+        }
+
+        // HASHTAG GENERATOR
+        const hashtagDatabase = {
+            fitness: {
+                popular: ['#fitness', '#fitnessmotivation', '#workout', '#gym', '#fitfam', '#fitnessjourney'],
+                trending: ['#fitnessgains', '#fitnesscommunity', '#fitnessgirl', '#fitnessbody', '#fitnesslifestyle'],
+                niche: ['#fitnessmindset', '#fitnessenthusiast', '#fitnessislife', '#fitnesschallenge', '#fitnessgains']
+            },
+            travel: {
+                popular: ['#travel', '#wanderlust', '#adventure', '#instatravel', '#travelgram', '#explore'],
+                trending: ['#traveldiaries', '#travelphotography', '#travelinspo', '#traveladdict', '#traveltheworld'],
+                niche: ['#solotravel', '#sustainabletravel', '#budgettravel', '#travelstories', '#offthebeatenpath']
+            },
+            fashion: {
+                popular: ['#fashion', '#style', '#fashionblogger', '#ootd', '#fashionstyle', '#fashionista'],
+                trending: ['#fashiontrend', '#fashionlover', '#fashionbomb', '#fashiondesigner', '#fashionable'],
+                niche: ['#sustainablefashion', '#fashionadvice', '#fashiondaily', '#fashioninspiration', '#streetstyle']
+            },
+            food: {
+                popular: ['#foodie', '#food', '#foodporn', '#instafood', '#foodblogger', '#foodphotography'],
+                trending: ['#foodblog', '#foodlover', '#foodstagram', '#foodgasm', '#foodie_culture'],
+                niche: ['#healthyfood', '#organicfood', '#veganfood', '#recipedeveloper', '#homecooked']
+            },
+            default: {
+                popular: ['#love', '#instagood', '#photooftheday', '#beautiful', '#happy', '#picoftheday'],
+                trending: ['#instagram', '#instalike', '#instamodel', '#instapic', '#instadaily'],
+                niche: ['#content', '#authentic', '#reallife', '#storytelling', '#community']
+            }
+        };
+
+        function generateHashtags() {
+            const topic = document.getElementById('hashtagTopic').value.trim().toLowerCase();
+            const platform = document.getElementById('hashtagPlatform').value;
+            const mix = document.getElementById('hashtagMix').value;
+            const count = parseInt(document.getElementById('hashtagCount').value);
+            
+            if (!topic) {
+                alert('Please enter a topic');
+                return;
+            }
+            
+            const db = hashtagDatabase[topic] || hashtagDatabase.default;
+            let hashtags = [];
+            
+            if (mix === 'balanced') {
+                hashtags = [...db.popular.slice(0, count/2), ...db.niche.slice(0, count/2)];
+            } else if (mix === 'trending') {
+                hashtags = db.trending.slice(0, count);
+            } else {
+                hashtags = db.niche.slice(0, count);
+            }
+            
+            hashtags = hashtags.slice(0, count);
+            
+            const hashtagList = document.getElementById('hashtagList');
+            hashtagList.textContent = hashtags.join(' ');
+            
+            document.getElementById('hashtagResults').style.display = 'block';
+            trackEvent('hashtags_generated', { topic, platform, mix, count });
+        }
+
+        // USERNAME GENERATOR
+        const usernamePatterns = {
+            professional: (input) => [
+                input.toLowerCase(),
+                input.toLowerCase().replace(/\s/g, '_'),
+                input.toLowerCase().replace(/\s/g, ''),
+                `official${input.toLowerCase()}`,
+                `${input.toLowerCase()}_official`
+            ],
+            creative: (input) => [
+                `creative_${input.toLowerCase()}`,
+                `the${input.toLowerCase()}`,
+                `${input.toLowerCase()}_creative`,
+                `artist${input.toLowerCase()}`,
+                `${input.toLowerCase()}_art`
+            ],
+            gaming: (input) => [
+                `${input.toLowerCase()}_gg`,
+                `${input.toLowerCase()}gaming`,
+                `gamer_${input.toLowerCase()}`,
+                `${input.toLowerCase()}_pro`,
+                `${input.toLowerCase()}esports`
+            ],
+            minimal: (input) => [
+                input.toLowerCase().substring(0, 3) + '.' + input.toLowerCase().substring(input.length - 3),
+                input.charAt(0).toLowerCase() + input.toLowerCase().substring(1).replace(/\s/g, ''),
+                input.toLowerCase().replace(/\s/g, '') + Math.floor(Math.random() * 99),
+                input.toLowerCase().substring(0, 5) + input.toLowerCase().substring(input.length - 2),
+                input.toLowerCase().replace(/\s/g, '_')
+            ]
+        };
+
+        function generateUsername() {
+            const name = document.getElementById('usernameInput').value.trim();
+            const style = document.getElementById('usernameStyle').value;
+            
+            if (!name) {
+                alert('Please enter a name');
+                return;
+            }
+            
+            const generator = usernamePatterns[style] || usernamePatterns.professional;
+            const usernames = generator(name);
+            
+            const usernameOptions = document.getElementById('usernameOptions');
+            usernameOptions.innerHTML = '';
+            
+            usernames.forEach((username, index) => {
+                const div = document.createElement('div');
+                div.style.cssText = 'padding: 16px; background: #f3f4f6; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-family: monospace; font-weight: 600; color: #2563eb;';
+                div.onmouseover = () => div.style.background = '#e5e7eb';
+                div.onmouseout = () => div.style.background = '#f3f4f6';
+                div.onclick = () => selectUsername(index);
+                div.innerHTML = `<input type="radio" name="usernameSelect" value="${index}" style="margin-right: 12px;"> @${username}`;
+                usernameOptions.appendChild(div);
+            });
+            
+            document.getElementById('usernameResults').style.display = 'block';
+            trackEvent('usernames_generated', { style, count: usernames.length });
+        }
+
+        let selectedUsernameOption = 0;
+        
+        function selectUsername(index) {
+            selectedUsernameOption = index;
+            document.querySelectorAll('input[name="usernameSelect"]').forEach((radio, i) => {
+                radio.checked = i === index;
+            });
+        }
+        
+        function copyUsername() {
+            const usernameOptions = document.getElementById('usernameOptions').children;
+            const selectedUsername = usernameOptions[selectedUsernameOption].textContent.split('] ').pop();
+            showMonetizationGate(selectedUsername, 'usernameCopyMsg');
         }
     </script>
 </body>
