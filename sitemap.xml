@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Home Page -->
     <url>
-        <loc>https://toolshub.pro</loc>
+        <loc>https://tools-hub-pro.netlify.app</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
@@ -10,63 +10,63 @@
     
     <!-- Tools Pages -->
     <url>
-        <loc>https://toolshub.pro#password</loc>
+        <loc>https://tools-hub-pro.netlify.app#password</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#qr</loc>
+        <loc>https://tools-hub-pro.netlify.app#qr</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#text</loc>
+        <loc>https://tools-hub-pro.netlify.app#text</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#word-counter</loc>
+        <loc>https://tools-hub-pro.netlify.app#word-counter</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#calculators</loc>
+        <loc>https://tools-hub-pro.netlify.app#calculators</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#instagram-bio</loc>
+        <loc>https://tools-hub-pro.netlify.app#instagram-bio</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#caption-generator</loc>
+        <loc>https://tools-hub-pro.netlify.app#caption-generator</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#hashtag-generator</loc>
+        <loc>https://tools-hub-pro.netlify.app#hashtag-generator</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#username-generator</loc>
+        <loc>https://tools-hub-pro.netlify.app#username-generator</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -74,28 +74,28 @@
     
     <!-- Info Pages -->
     <url>
-        <loc>https://toolshub.pro#about</loc>
+        <loc>https://tools-hub-pro.netlify.app#about</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#privacy</loc>
+        <loc>https://tools-hub-pro.netlify.app#privacy</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>quarterly</changefreq>
         <priority>0.6</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#terms</loc>
+        <loc>https://tools-hub-pro.netlify.app#terms</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>quarterly</changefreq>
         <priority>0.6</priority>
     </url>
     
     <url>
-        <loc>https://toolshub.pro#contact</loc>
+        <loc>https://tools-hub-pro.netlify.app#contact</loc>
         <lastmod>2025-12-04</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
